@@ -1,0 +1,39 @@
+{
+  "name": "FastAPI Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.10"
+    }
+  },
+  "postCreateCommand": "pip install fastapi uvicorn"
+}
+mansar-afredeal-api/
+├── app/
+│   ├── main.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── produits.py
+│   │   ├── contact.py
+│   │   └── partenaires.py
+│   └── models/
+│       ├── __init__.py
+│       ├── produit.py
+│       ├── contact.py
+│       └── partenaire.py
+├── requirements.txt
+├── README.md
+└── .devcontainer/
+    └── devcontainer.json
+  from fastapi import FastAPI
+from app.routes import produits, contact, partenaires
+
+app = FastAPI(title="Mansar & Afredeal API")
+
+app.include_router(produits.router, prefix="/produits", tags=["Produits"])
+app.include_router(contact.router, prefix="/contact", tags=["Contact"])
+app.include_router(partenaires.router, prefix="/partenaires", tags=["Partenaires"])
+
+@app.get("/")
+async def read_root():
+    return {"message": "Bienvenue sur l'API de Mansar & Afredeal"}
